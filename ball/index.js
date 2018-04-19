@@ -6,8 +6,12 @@ window.onload = function () {
   canvas.width = '600';
   canvas.height = '400';
   cxt = canvas.getContext('2d');
-  canvas.addEventListener('mousemove', (event) => {
-    new Ball(event.clientX, event.clientY);
+  // canvas.addEventListener('mousemove', (event) => {
+  //   new Ball(event.clientX, event.clientY);
+  // });
+  canvas.addEventListener('touchmove', (event) => {
+    let touch = event.changedTouches[0];
+    new Ball(touch.clientX, touch.clientY);
   });
   for(let i=0;i<5;i++){
     new Ball(100,100);
@@ -16,7 +20,7 @@ window.onload = function () {
     cxt.clearRect(0,0,canvas.width,canvas.height);
     for(let i=0;i<ballList.length;i++){
       ballList[i].update();
-      if(ballList[i].r>0)
+      if(ballList[i])
         ballList[i].render();
     }
   },20);
