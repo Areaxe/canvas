@@ -5,9 +5,8 @@ window.onload = function () {
   canvas = document.querySelector('#canvas');
   let clientW = window.innerWidth;
   let clientH = window.innerHeight;
-  console.log(clientW,clientH)
-  canvas.width = '600';
-  canvas.height = '400';
+  canvas.width = clientW; 
+  canvas.height = clientH;
   cxt = canvas.getContext('2d');
   canvas.addEventListener('mousemove', (event) => {
     new Ball(event.clientX, event.clientY);
