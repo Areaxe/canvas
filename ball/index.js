@@ -3,19 +3,20 @@ let ballList = [];
 let cxt;
 window.onload = function () {
   canvas = document.querySelector('#canvas');
+  let clientW = window.innerWidth;
+  let clientH = window.innerHeight;
+  console.log(clientW,clientH)
   canvas.width = '600';
   canvas.height = '400';
   cxt = canvas.getContext('2d');
-  // canvas.addEventListener('mousemove', (event) => {
-  //   new Ball(event.clientX, event.clientY);
-  // });
+  canvas.addEventListener('mousemove', (event) => {
+    new Ball(event.clientX, event.clientY);
+  });
   canvas.addEventListener('touchmove', (event) => {
     let touch = event.changedTouches[0];
     new Ball(touch.clientX, touch.clientY);
   });
-  for(let i=0;i<5;i++){
-    new Ball(100,100);
-  }
+
   setInterval(()=>{
     cxt.clearRect(0,0,canvas.width,canvas.height);
     for(let i=0;i<ballList.length;i++){
