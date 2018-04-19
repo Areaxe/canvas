@@ -29,10 +29,11 @@ window.onload = function () {
 let Ball = function (x, y) {
   this.x = x;
   this.y = y;
-  this.r = 30;
+  this.r = Math.random() * 50;
   this.dx = Math.random() * 10 - 5;
   this.dy = Math.random() * 10 - 5;
   this.dr = Math.random() + 0.3;
+  this.color = getColor();
   ballList.push(this);
 }
 
@@ -48,8 +49,18 @@ Ball.prototype = {
   render: function () {
     cxt.beginPath();
     cxt.arc(this.x,this.y,this.r,0,Math.PI*2,true);
-    cxt.fillStyle = 'blue';
+    cxt.fillStyle = this.color;
     cxt.fill();
     cxt.closePath();
   }
+}
+
+function getColor(){
+  var colorValue="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+  var colorArray = colorValue.split(",");
+   var color="#";//定义一个存放十六进制颜色值的字符串变量，先将#存放进去
+   for(var i=0;i<6;i++){
+      color+=colorArray[Math.floor(Math.random()*16)];
+   }
+   return color;
 }
