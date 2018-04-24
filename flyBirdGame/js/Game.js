@@ -5,8 +5,8 @@ let Game = Class.extend({
 		this.ctx = this.canvas.getContext('2d');
 		this.timer = null;
 		let self = this;
-		let images = new sourceUtil();
-		images.loadImages('../config/r.json',function(currentNum,allNum,images){
+		let sourceutil = new sourceUtil();
+		sourceutil.loadImages('../r.json',function(currentNum,allNum,images){
 			if(currentNum == allNum){
 				self.images = images;
 				self.run();
