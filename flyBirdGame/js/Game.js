@@ -5,8 +5,8 @@ let Game = Class.extend({
 		this.ctx = this.canvas.getContext('2d');
 		this.timer = null;
 		let self = this;
-		let sourceutil = new sourceUtil();
-		sourceutil.loadImages('../r.json',function(currentNum,allNum,images){
+		let images = new sourceUtil();
+		images.loadImages('r.json',function(currentNum,allNum,images){
 			if(currentNum == allNum){
 				self.images = images;
 				self.run();
@@ -32,7 +32,6 @@ let Game = Class.extend({
 		this.timer = setInterval(function(){
 			_this.mainLoop();
 		},1000/this.fps);
-		console.log(this.images);
 		this.house = new Background({image: this.images.house, width: 300,	height: 256, y: 30,speed:3 });
 		this.tree = new Background({image: this.images.tree, width: 300,	height: 216, y: treeY,speed:2 });
 		this.floor = new Background({image: this.images.floor, width: 48,	height: 48, y: floorY,speed:1 });
