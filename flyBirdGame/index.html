@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bird</title>
+	<style lang="">
+		#canvas{
+			background-color: lightblue;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="800" height="400" id="canvas"></canvas>
+	<script src="./js/simpleInheritance.js"></script>
+	<script src="./js/Game.js"></script>
+	<script src="./js/sourceUtil.js"></script>
+	<script src="./js/background.js"></script>
+	<script src="./js/Bird.js"></script>
+	<script>
+		let game = new Game({
+			fps: 10,
+			canvasId: 'canvas'
+		});
+	</script>
+</body>
+</html>
