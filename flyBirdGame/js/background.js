@@ -10,7 +10,6 @@ let Background = Class.extend({
 	},
 	update: function(){
 		this.x = this.x - this.speed;
-		game.ctx.fillText(this.x,20,20);
 		if((this.x + this.width*this.amount) <=0){
 			this.x = 0;
 		}

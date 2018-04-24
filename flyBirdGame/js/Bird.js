@@ -1,11 +1,12 @@
 let Bird = Class.extend({
-	init: function({image,x,y,width,height}){
+	init: function({image,y,width,height}){
 		this.image = image;
-		this.x = x;
-		this.y = y;
+		this.x = game.canvas.width/2;
+		this.y = game.canvas.height/2;
 		this.width = width;
 		this.height = height;
 		this.swing = 0;
+		console.log(this)
 	},
 	update: function(){
 		this.swing ++;
@@ -14,6 +15,6 @@ let Bird = Class.extend({
 		}
 	},
 	render: function(){
-		Game.ctx.drawImage(this.image,0,0,85,0,game.width/2,game.canvas.height/2,this.x,this.y);
+		game.ctx.drawImage(this.image,this.swing*85,0,85,60,this.x,this.y,85,60);
 	}
 })
