@@ -1,12 +1,14 @@
 let Pipe = Class.extend({
 	init: function(){
+		let canvasHeight = game.canvas.height;
 		this.state = Math.round(Math.random());  
 		this.x = game.canvas.width;
-		this.maxH = game.canvas.height / 2 - 60;
-		this.image = game.images.pipe0;
+		this.imageDown = game.images.pipe0;
+		this.imageUp = game.images.pipe1;
 		this.width = 148;
-		this.y = Math.random() * 1664;
-		this.height = 1664;
+		this.dHeight = Math.random() * (canvasHeight / 3) + canvasHeight/3;
+		this.upHeight = canvasHeight - this.dHeight - 180
+		this.downY = canvasHeight-this.dHeight;
 	},
 	update: function(){
 		this.x --;
@@ -15,23 +17,10 @@ let Pipe = Class.extend({
 		}
 	},
 	render: function(){
-		let pipeH = this.height - this.y;
-		console.log(pipeH)
-		console.log(this.width)
-		console.log(pipeH)
-		console.log(pipeH)
-		game.ctx.drawImage(this.image, 0,pipeH, this.width,this.height,this.x,0,this.x,this.y);
-		
-		// let h,currentX;
-		// for(let i=0; i < pipeList.length; i++){
-		// 	h = Math.random() * this.maxH;
-		// 	currentX = this.x + i*(148 + this.space);
-		// 	game.ctx.drawImage(this.image,0,)
-		// 	// game.ctx.drawImage(this.x;);
-		// }
+		let {imageUp,imageDown,width,dHeight,upHeight,downY,x} = this;
+		//上面的管子
+		game.ctx.drawImage(imageUp,0,1664-upHeight, width,upHeight,x,0,width,upHeight);
+		//下面的管子
+		game.ctx.drawImage(imageDown, 0,0, width,dHeight,x,downY,width,dHeight);
 	}
-
 });
-
-// render pipeList
-// add pipe when 

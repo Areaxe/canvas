@@ -28,8 +28,15 @@ let Game = Class.extend({
 		this.floor.render();
 		this.bird.update();
 		this.bird.render();
-		this.pipe.update();
-		this.pipe.render();
+		if(!(this.frames.currentFrame % 348)){
+			this.pipeList.push(new Pipe());
+		}
+		for(let i=0;i<this.pipeList.length;i++){
+			this.pipeList[i].update();
+			if(this.pipeList[i]){
+				this.pipeList[i].render();
+			}
+		}
 	},
 
 	run: function(){
@@ -44,8 +51,8 @@ let Game = Class.extend({
 		this.tree = new Background({image: this.images.tree, width: 300,	height: 216, y: treeY,speed:2 });
 		this.floor = new Background({image: this.images.floor, width: 48,	height: 48, y: floorY,speed:1 });
 		this.bird = new Bird({image: this.images.bird,width: 255,height:60});
-		this.pipe = new Pipe();
-
+		this.pipeList.push(new Pipe());
+		
 		this.timer = setInterval(function(){
 			_this.mainLoop();
 		},1000/this.fps);
