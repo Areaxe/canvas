@@ -5,6 +5,7 @@ let Game = Class.extend({
 		this.ctx = this.canvas.getContext('2d');
 		this.timer = null;
 		this.gameState = 'on';
+		this.pipeList = [];
 		let self = this;
 		
 		let images = new sourceUtil();
@@ -27,6 +28,8 @@ let Game = Class.extend({
 		this.floor.render();
 		this.bird.update();
 		this.bird.render();
+		this.pipe.update();
+		this.pipe.render();
 	},
 
 	run: function(){
@@ -35,22 +38,25 @@ let Game = Class.extend({
 		let floorY = canvasHeight - 48;
 		let treeY = canvasHeight - 264;
 		let hourseY = canvasHeight - 360;
-		this.canvas.addEventListener('mousedown',function(event){
-			console.log(event)
-		});
-		window.document.onkeydown = function(){
-			if(this.timer){
 
-			}
-		}
-		this.timer = setInterval(function(){
-			_this.mainLoop();
-		},1000/this.fps);
 		this.frames = new FramesUtil();
 		this.house = new Background({image: this.images.house, width: 300,	height: 256, y: hourseY,speed:3 });
 		this.tree = new Background({image: this.images.tree, width: 300,	height: 216, y: treeY,speed:2 });
 		this.floor = new Background({image: this.images.floor, width: 48,	height: 48, y: floorY,speed:1 });
-		this.bird = new Bird({image: this.images.bird,width: 255,height:60})
+		this.bird = new Bird({image: this.images.bird,width: 255,height:60});
+		this.pipe = new Pipe();
+
+		this.timer = setInterval(function(){
+			_this.mainLoop();
+		},1000/this.fps);
+
+		
+		window.document.onkeydown = function(event){
+			if(event.keyCode == 38){
+				_this.bird.upStatFram = _this.frames.currentFrame;
+				_this.bird.fly();
+			}
+    }
 	},
 
 	pause: function(){
