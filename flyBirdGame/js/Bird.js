@@ -14,11 +14,14 @@ let Bird = Class.extend({
   },
 
   update: function () {
-    this.swing++;
     let currentFrame = game.frames.currentFrame;
-    if (this.swing == 3) {
-      this.swing = 0;
+    if(!(currentFrame % 4)){
+      this.swing++;
+      if (this.swing == 3) {
+        this.swing = 0;
+      }
     }
+    
     if(this.state == 1){
       this.deltY ++;
       this.dy = -14 + this.deltY;
@@ -40,6 +43,9 @@ let Bird = Class.extend({
 
   fly: function(){
     this.state = 1;
+  },
+  drop: function(){
+    this.dy = 0.01 * 9.8 * Math.pow(game.frames.currentFrame - this.dropStatFram,2);
   },
 
   render: function () {

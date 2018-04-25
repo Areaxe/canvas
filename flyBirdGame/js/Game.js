@@ -25,9 +25,14 @@ let Game = Class.extend({
 		this.tree.update();
 		this.tree.render();
 		this.floor.update();
-		this.floor.render();
-		this.bird.update();
-		this.bird.render();
+    this.floor.render();
+    if(this.gameState !== 'over'){
+      this.bird.update();
+		  this.bird.render();
+    }else{
+      this.bird.drop();
+    }
+		
 		if(!(this.frames.currentFrame % 348)){
 			this.pipeList.push(new Pipe());
 		}
@@ -63,7 +68,7 @@ let Game = Class.extend({
 				_this.bird.upStatFram = _this.frames.currentFrame;
 				_this.bird.fly();
 			}
-    }
+    	}
 	},
 
 	pause: function(){
