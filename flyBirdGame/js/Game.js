@@ -6,6 +6,8 @@ let Game = Class.extend({
 		this.timer = null;
 		this.gameState = 'on';
 		this.pipeList = [];
+		this.maxScore = 0;
+		this.currentScore = 0;
 		let self = this;
 		
 		let images = new sourceUtil();
@@ -20,6 +22,7 @@ let Game = Class.extend({
 	mainLoop: function(){
 		this.frames.update();
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		
 		this.house.update();
 		this.house.render();
 		this.tree.update();
@@ -33,7 +36,7 @@ let Game = Class.extend({
       this.bird.drop();
     }
 		
-		if(!(this.frames.currentFrame % 348)){
+		if(!(this.frames.currentFrame % 200)){
 			this.pipeList.push(new Pipe());
 		}
 		for(let i=0;i<this.pipeList.length;i++){
@@ -42,6 +45,8 @@ let Game = Class.extend({
 				this.pipeList[i].render();
 			}
 		}
+		this.ctx.fillText ('当前得分：' + this.currentScore,940,20);
+		this.ctx.fillText ('最高分数: ' + this.maxScore,940,40);
 	},
 
 	run: function(){
@@ -77,7 +82,11 @@ let Game = Class.extend({
 	},
 
 	gameover: function(){
+		if(this.currentScore > this.maxScore){
+			this.maxScore = this.currentScore;
+		}
 		clearInterval(this.timer);
 		this.timer = null;
+		
 	}
 });
