@@ -32,11 +32,11 @@ let Bird = Class.extend({
       }
     }
     else{
-      this.dy = 0.01 * 9.8 * Math.pow(currentFrame - this.dropStatFram,2);
+      this.dy = 0.5 * 9.8 * Math.sqrt(currentFrame - this.dropStatFram,2) / game.fps /1000;
     }
     this.y = this.y + this.dy;
     
-    if(this.y>= game.canvas.height){
+    if(this.y >= game.canvas.height){
       game.gameover();
     }
   },
@@ -44,8 +44,9 @@ let Bird = Class.extend({
   fly: function(){
     this.state = 1;
   },
+
   drop: function(){
-    this.dy = 0.01 * 9.8 * Math.pow(game.frames.currentFrame - this.dropStatFram,2);
+    this.dy = 0.5 * 9.8 * Math.sqrt(currentFrame - this.dropStatFram,2) / game.fps /1000;
   },
 
   render: function () {

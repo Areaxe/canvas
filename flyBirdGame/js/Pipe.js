@@ -13,13 +13,14 @@ let Pipe = Class.extend({
   update: function () {
     this.x = this.x - this.speed;
     if (this.x + this.width <= 0) {
-      _.without(game.pipeList, this);
+     game.pipeList = _.without(game.pipeList, this);
     }
     let bird = game.bird;
     if (bird.x + 76 > this.x && bird.x - this.x <= 148) {
       if(bird.x - this.x ==74){
         game.currentScore = game.currentScore + 1; 
       }
+
       if ( bird.y >= this.downY || bird.y <= this.upHeight ) {
         bird.drop();
         game.gameState = 'over';

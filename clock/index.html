@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Clock</title>
+  <style lang="">
+    #canvas {
+      border: solid 1px #f0f0f0;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" width="400" height="400"></canvas>
+  <script>
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext('2d');
+    let R = 100;
+    let date = new Date();
+    let second = date.getSeconds();
+    let minute = date.getMinutes();
+    let hour = date.getHours();
+    let centerX = 180;
+    let centerY = 180;
+    ctx.fillText(hour+":"+minute+":"+second,20,40);
+    drawClock();
+
+    setInterval(function(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillText(hour+":"+getFullTime(minute)+":"+getFullTime(second),20,40);
+      second ++;
+      if(second>60){
+        second = 1;
+        minute ++;
+        if(minute == 60){
+          hour ++;
+        }
+      }
+      drawClock();
+    },1000);
+
+    function drawClock(){
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, R, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.stroke();
+      drawClockNums();
+      drawCenter();
+      drawHand(Math.PI/6*(hour - 3 + 0.1),'hour');
+      drawHand(Math.PI/6*(second/5 - 3 - 0.08),'second');
+      drawHand(Math.PI/6*(minute/5 - 3 - 0.08),'minute');
+    }
+
+    function drawClockNums() {
+      let angle = 0;
+      for (let i = 1; i <= 12; i++) {
+        angle = Math.PI / 6 * (i - 3);
+        let d = 12;
+        ctx.fillText(i, centerX - 3 + (R - d) * Math.cos(angle), centerY + 3 + (R - d) * Math.sin(angle));
+      }
+    }
+
+    function drawCenter() {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 3, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawHand(angle,type){
+      let dLength = 25;
+      let lineWidth = 1;
+      if(type=='hour'){
+        ctx.lineWidth = 3;
+        dLength = 35;
+      }else{
+        ctx.lineWidth = 1;
+        dLength = type=='minute' ? 30 :25;
+      }
+      ctx.beginPath();
+      ctx.moveTo(centerX,centerY);
+      ctx.lineTo(centerX - 3 + (R - dLength) * Math.cos(angle), centerY + 3 + (R - dLength) * Math.sin(angle));
+      ctx.lineJoin = 'round';
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    function getFullTime(time){
+      return time > 9 ? time : '0' + time;
+    }
+  </script>
+</body>
+
+</html>
