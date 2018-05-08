@@ -16,13 +16,17 @@ let Pipe = Class.extend({
      game.pipeList = _.without(game.pipeList, this);
     }
     let bird = game.bird;
-    if (bird.x + 76 > this.x && bird.x - this.x <= 148) {
+    if (bird.x + 66 > this.x && bird.x - this.x <= 138) {
+      game.currentPipe = this;
       if(bird.x - this.x ==74){
         game.currentScore = game.currentScore + 1; 
       }
+      console.log(bird.vt);
+      if(bird.y + bird.vt+4 >= this.downY){
+        game.gameover();
+      }
 
       if ( bird.y >= this.downY || bird.y <= this.upHeight ) {
-        bird.drop();
         game.gameState = 'over';
         this.speed == 0;
         game.gameover();

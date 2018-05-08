@@ -87,6 +87,5 @@ let Game = Class.extend({
 		}
 		clearInterval(this.timer);
 		this.timer = null;
-		
 	}
 });

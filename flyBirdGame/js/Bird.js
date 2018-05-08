@@ -11,17 +11,18 @@ let Bird = Class.extend({
     this.dropStatFram = game.frames.currentFrame;
     this.nowTime = 0;
     this.state = 0;   // 0 drop,1 fly up
+    this.ndy = 0;
   },
 
   update: function () {
     let currentFrame = game.frames.currentFrame;
+    this.vt = 0.1* 9.8 * Math.sqrt((currentFrame - this.dropStatFram)/game.fps,2);
     if(!(currentFrame % 4)){
       this.swing++;
       if (this.swing == 3) {
         this.swing = 0;
       }
     }
-    
     if(this.state == 1){
       this.deltY ++;
       this.dy = -14 + this.deltY;
@@ -32,7 +33,10 @@ let Bird = Class.extend({
       }
     }
     else{
-      this.dy = 0.5 * 9.8 * Math.sqrt(currentFrame - this.dropStatFram,2) / game.fps /1000;
+      // this.vt = 0.5* 9.8 * Math.sqrt((currentFrame - this.dropStatFram)/game.fps,2);
+      // console.log(vt)
+      this.dy += this.vt;
+      // this.dy += 1;
     }
     this.y = this.y + this.dy;
     
@@ -46,7 +50,7 @@ let Bird = Class.extend({
   },
 
   drop: function(){
-    this.dy = 0.5 * 9.8 * Math.sqrt(currentFrame - this.dropStatFram,2) / game.fps /1000;
+    this.dy = this.dy + 0.5 * 9.8 * Math.sqrt(currentFrame - this.dropStatFram,2) / game.fps /1000;
   },
 
   render: function () {
