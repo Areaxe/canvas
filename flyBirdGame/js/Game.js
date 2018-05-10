@@ -4,11 +4,12 @@ let Game = Class.extend({
 		this.canvas = document.querySelector('#' + canvasId);
 		this.ctx = this.canvas.getContext('2d');
 		this.timer = null;
-		this.gameState = 'on';
+		this.gameOver = false;
 		this.pipeList = [];
 		this.maxScore = 0;
 		this.currentScore = 0;
 		let self = this;
+		this.pipeInteval = 200;
 		
 		let images = new sourceUtil();
 		images.loadImages('r.json',function(currentNum,allNum,images){
@@ -28,15 +29,11 @@ let Game = Class.extend({
 		this.tree.update();
 		this.tree.render();
 		this.floor.update();
-    this.floor.render();
-    if(this.gameState !== 'over'){
-      this.bird.update();
-		  this.bird.render();
-    }else{
-      this.bird.drop();
-    }
+		this.floor.render();
+		this.bird.update();
+		this.bird.render();
 		
-		if(!(this.frames.currentFrame % 200)){
+		if(!(this.frames.currentFrame % this.pipeInteval)){
 			this.pipeList.push(new Pipe());
 		}
 		for(let i=0;i<this.pipeList.length;i++){
@@ -45,8 +42,13 @@ let Game = Class.extend({
 				this.pipeList[i].render();
 			}
 		}
+		
 		this.ctx.fillText ('当前得分：' + this.currentScore,940,20);
 		this.ctx.fillText ('最高分数: ' + this.maxScore,940,40);
+		if(this.gameOver){
+		this.ctx.drawImage(this.images.gameover, 0, 0, 622, 144, this.canvas.width/2-311, this.canvas.height/2-72, 622, 144);
+			
+		}
 	},
 
 	run: function(){
@@ -82,6 +84,7 @@ let Game = Class.extend({
 	},
 
 	gameover: function(){
+		this.gameOver = true;
 		if(this.currentScore > this.maxScore){
 			this.maxScore = this.currentScore;
 		}

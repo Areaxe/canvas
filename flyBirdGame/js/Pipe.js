@@ -21,13 +21,12 @@ let Pipe = Class.extend({
       if(bird.x - this.x ==74){
         game.currentScore = game.currentScore + 1; 
       }
-      console.log(bird.vt);
       if(bird.y + bird.vt+4 >= this.downY){
         game.gameover();
       }
 
-      if ( bird.y >= this.downY || bird.y <= this.upHeight ) {
-        game.gameState = 'over';
+      if ( bird.y + bird.height >= this.downY || bird.y <= this.upHeight ) {
+        game.gameOver;
         this.speed == 0;
         game.gameover();
         return;
