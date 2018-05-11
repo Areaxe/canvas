@@ -24,16 +24,19 @@ let Game = Class.extend({
 			});
 		}
 		// add click Listener when click begin
-		this.canvas.addEventListener('click',(e)=>{
+		this.canvas.onclick = (e = event ) => {
 			let clickPosition = this.getMousePos(e);
 			console.log(clickPosition)
+			var x=e.clientX-canvas.offsetLeft;
+    	var y=e.clientY-canvas.offsetTop;
+			console.log(x,y);
 			if(this.gameOver){
-				if(clickPosition.x> 802 && clickPosition.x < 980 && clickPosition.y > 640 && clickPosition.y < 666){
+				if(x> 772 && x < 960 && y > 520 && y < 560){
 					this.init({fps:this.fps,canvasId:this.canvasId});
 					this.run();
 				}
 			}
-		});
+		};
 		window.document.onkeydown = (event)=>{
 			if(event.keyCode == 38 && !this.gameOver){
 				this.bird.upStatFram = this.frames.currentFrame;
@@ -78,7 +81,7 @@ let Game = Class.extend({
 		this.ctx.fillText ('最高分数: ' + this.maxScore,940,40);
 		if(this.gameOver){
 			this.ctx.drawImage(this.images.gameover, 0, 0, 622, 144, this.canvas.width/2-311, this.canvas.height/2-72, 622, 144);
-			this.ctx.drawImage(this.images.gamebegin, 0, 0, 337, 75,this.canvas.width - 350,this.canvas.height - 98 , 337, 75);
+			this.ctx.drawImage(this.images.gamebegin, 0, 0, 337, 75,this.canvas.width - 300,this.canvas.height - 100 , 337, 75);
 		}
 	},
 
@@ -106,8 +109,8 @@ let Game = Class.extend({
 				this.gameBeginTimer = null;
 				this.gameOver = false;
 				this.timer = setInterval(function(){
-				_this.mainLoop();
-			},1000/this.fps);
+					_this.mainLoop();
+				},1000/this.fps);
 			}
 		},1000);
 	},
