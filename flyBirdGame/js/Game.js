@@ -1,23 +1,53 @@
 let Game = Class.extend({
 	init: function({fps,canvasId}){
 		this.fps = fps || 60;
+		this.canvasId = canvasId;
 		this.canvas = document.querySelector('#' + canvasId);
 		this.ctx = this.canvas.getContext('2d');
 		this.timer = null;
 		this.gameOver = false;
 		this.pipeList = [];
-		this.maxScore = 0;
+		this.maxScore = this.getMaxScore();
 		this.currentScore = 0;
-		let self = this;
+		this.restTime = 3;
 		this.pipeInteval = 200;
-		
-		let images = new sourceUtil();
-		images.loadImages('r.json',function(currentNum,allNum,images){
-			if(currentNum == allNum){
-				self.images = images;
-				self.run();
+
+		// init image source
+		let self = this;
+		if(!this.images){
+			let images = new sourceUtil();
+			images.loadImages('r.json',function(currentNum,allNum,images){
+				if(currentNum == allNum){
+					self.images = images;
+					self.run();
+				}
+			});
+		}
+		// add click Listener when click begin
+		this.canvas.addEventListener('click',(e)=>{
+			let clickPosition = this.getMousePos(e);
+			if(this.gameOver){
+				if(clickPosition.x> 802 && clickPosition.x < 980 && clickPosition.y > 640 && clickPosition.y < 666){
+					this.init({fps:this.fps,canvasId:this.canvasId});
+					this.run();
+				}
 			}
 		});
+		window.document.onkeydown = (event)=>{
+			if(event.keyCode == 38 && !this.gameOver){
+				this.bird.upStatFram = this.frames.currentFrame;
+				this.bird.fly();
+			}
+		}
+	},
+
+	getMousePos:function(event) {
+		var e = event || window.event;
+		return {'x':e.screenX,'y':e.screenY}
+	},
+
+	getMaxScore: function(){
+		return this.maxScore || 0;
 	},
 
 	mainLoop: function(){
@@ -46,8 +76,8 @@ let Game = Class.extend({
 		this.ctx.fillText ('当前得分：' + this.currentScore,940,20);
 		this.ctx.fillText ('最高分数: ' + this.maxScore,940,40);
 		if(this.gameOver){
-		this.ctx.drawImage(this.images.gameover, 0, 0, 622, 144, this.canvas.width/2-311, this.canvas.height/2-72, 622, 144);
-			
+			this.ctx.drawImage(this.images.gameover, 0, 0, 622, 144, this.canvas.width/2-311, this.canvas.height/2-72, 622, 144);
+			this.ctx.drawImage(this.images.gamebegin, 0, 0, 337, 75,this.canvas.width - 350,this.canvas.height - 98 , 337, 75);
 		}
 	},
 
@@ -64,18 +94,28 @@ let Game = Class.extend({
 		this.floor = new Background({image: this.images.floor, width: 48,	height: 48, y: floorY,speed:1 });
 		this.bird = new Bird({image: this.images.bird,width: 255,height:60});
 		this.pipeList.push(new Pipe());
-		
-		this.timer = setInterval(function(){
-			_this.mainLoop();
-		},1000/this.fps);
-
-		
-		window.document.onkeydown = function(event){
-			if(event.keyCode == 38){
-				_this.bird.upStatFram = _this.frames.currentFrame;
-				_this.bird.fly();
+		this.restRender();  // restTime render
+		this.gameBeginTimer =	setInterval(()=>{
+			this.restRender();
+			this.ctx.drawImage(this.images.number,40 * this.restTime,0,40,57,this.canvas.width/2,this.canvas.height/2,40,57);
+			this.restTime -- ;
+			if(this.restTime < 0){
+				clearInterval(this.gameBeginTimer);
+				this.gameBeginTimer = null;
+				this.gameOver = false;
+				this.timer = setInterval(function(){
+				_this.mainLoop();
+			},1000/this.fps);
 			}
-    	}
+		},1000);
+	},
+
+	restRender: function(){
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		this.house.render();
+		this.tree.render();
+		this.floor.render();
+		this.bird.render();
 	},
 
 	pause: function(){
@@ -85,9 +125,6 @@ let Game = Class.extend({
 
 	gameover: function(){
 		this.gameOver = true;
-		if(this.currentScore > this.maxScore){
-			this.maxScore = this.currentScore;
-		}
 		clearInterval(this.timer);
 		this.timer = null;
 	}

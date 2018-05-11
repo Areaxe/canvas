@@ -39,6 +39,9 @@ let Bird = Class.extend({
       // this.dy += 1;
     }
     this.y = this.y + this.dy;
+    if(this.y + this.height>game.canvas.height){
+      game.gameover();
+    }
   },
 
   fly: function(){

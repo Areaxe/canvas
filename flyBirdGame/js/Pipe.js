@@ -19,7 +19,10 @@ let Pipe = Class.extend({
     if (bird.x + 66 > this.x && bird.x - this.x <= 138) {
       game.currentPipe = this;
       if(bird.x - this.x ==74){
-        game.currentScore = game.currentScore + 1; 
+        game.currentScore = game.currentScore + 1;
+        if(game.currentScore > game.maxScore){
+          game.maxScore = game.currentScore;
+        } 
       }
       if(bird.y + bird.vt+4 >= this.downY){
         game.gameover();
