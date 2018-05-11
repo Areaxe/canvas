@@ -26,6 +26,7 @@ let Game = Class.extend({
 		// add click Listener when click begin
 		this.canvas.addEventListener('click',(e)=>{
 			let clickPosition = this.getMousePos(e);
+			console.log(clickPosition)
 			if(this.gameOver){
 				if(clickPosition.x> 802 && clickPosition.x < 980 && clickPosition.y > 640 && clickPosition.y < 666){
 					this.init({fps:this.fps,canvasId:this.canvasId});
@@ -95,10 +96,11 @@ let Game = Class.extend({
 		this.bird = new Bird({image: this.images.bird,width: 255,height:60});
 		this.pipeList.push(new Pipe());
 		this.restRender();  // restTime render
+			this.ctx.drawImage(this.images.number,40 * this.restTime,0,40,57,this.canvas.width/2,this.canvas.height/2,40,57);
 		this.gameBeginTimer =	setInterval(()=>{
+			this.restTime -- ;
 			this.restRender();
 			this.ctx.drawImage(this.images.number,40 * this.restTime,0,40,57,this.canvas.width/2,this.canvas.height/2,40,57);
-			this.restTime -- ;
 			if(this.restTime < 0){
 				clearInterval(this.gameBeginTimer);
 				this.gameBeginTimer = null;
