@@ -9,7 +9,7 @@ let Game = Class.extend({
 		this.pipeList = [];
 		this.maxScore = this.getMaxScore();
 		this.currentScore = 0;
-		this.restTime = 3;
+		this.countdown = 3;
 		this.pipeInteval = 200;
 
 		// init image source
@@ -25,9 +25,8 @@ let Game = Class.extend({
 		}
 		// add click Listener when click begin
 		this.canvas.onclick = (e = event ) => {
-			let clickPosition = this.getMousePos(e);
-			var x=e.clientX-canvas.offsetLeft;
-    	var y=e.clientY-canvas.offsetTop;
+			var x = e.clientX - canvas.offsetLeft;
+    	var y = e.clientY - canvas.offsetTop;
 			if(this.gameOver){
 				if(x> 772 && x < 960 && y > 520 && y < 560){
 					this.init({fps:this.fps,canvasId:this.canvasId});
@@ -35,23 +34,25 @@ let Game = Class.extend({
 				}
 			}
 		};
+
+		// add key event 
 		window.document.onkeydown = (event)=>{
 			if(event.keyCode == 38 && !this.gameOver){
 				this.bird.upStatFram = this.frames.currentFrame;
 				this.bird.fly();
 			}
+			if(event.keyCode == 32 && !this.gameOver){
+				this.togglePause();
+			}
 		}
 	},
 
-	getMousePos:function(event) {
-		var e = event || window.event;
-		return {'x':e.screenX,'y':e.screenY}
-	},
-
+	// save maxScore and return maxScore
 	getMaxScore: function(){
 		return this.maxScore || 0;
 	},
 
+	// update canvas when game run
 	mainLoop: function(){
 		this.frames.update();
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -96,34 +97,40 @@ let Game = Class.extend({
 		this.floor = new Background({image: this.images.floor, width: 48,	height: 48, y: floorY,speed:1 });
 		this.bird = new Bird({image: this.images.bird,width: 255,height:60});
 		this.pipeList.push(new Pipe());
-		this.restRender();  // restTime render
-			this.ctx.drawImage(this.images.number,40 * this.restTime,0,40,57,this.canvas.width/2,this.canvas.height/2,40,57);
+		this.updateCountdown();  // countdown render
 		this.gameBeginTimer =	setInterval(()=>{
-			this.restTime -- ;
-			this.restRender();
-			this.ctx.drawImage(this.images.number,40 * this.restTime,0,40,57,this.canvas.width/2,this.canvas.height/2,40,57);
-			if(this.restTime < 0){
+			this.countdown -- ;
+			this.updateCountdown();
+			if(this.countdown < 0){
 				clearInterval(this.gameBeginTimer);
 				this.gameBeginTimer = null;
 				this.gameOver = false;
-				this.timer = setInterval(function(){
+				this.timer = setInterval(function(){  //Time to start the game 
 					_this.mainLoop();
 				},1000/this.fps);
 			}
 		},1000);
 	},
 
-	restRender: function(){
+// Update countdown
+	updateCountdown: function(){
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		this.house.render();
 		this.tree.render();
 		this.floor.render();
 		this.bird.render();
+		this.ctx.drawImage(this.images.number,40 * this.countdown,0,40,57,this.canvas.width/2,this.canvas.height/2,40,57);
 	},
 
-	pause: function(){
-		clearInterval(this.timer);
-		this.timer = null;
+	togglePause: function(){
+		if(this.timer){
+			clearInterval(this.timer);
+			this.timer = null;
+		}else{
+			this.timer = setInterval(()=>{  //Time to start the game 
+					this.mainLoop();
+				},1000/this.fps)
+		}
 	},
 
 	gameover: function(){

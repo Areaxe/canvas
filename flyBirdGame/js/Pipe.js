@@ -28,7 +28,7 @@ let Pipe = Class.extend({
         game.gameover();
       }
 
-      if ( bird.y + bird.height >= this.downY || bird.y <= this.upHeight ) {
+      if ( bird.y + bird.height - 1 >= this.downY || bird.y <= this.upHeight ) {
         game.gameOver;
         this.speed == 0;
         game.gameover();

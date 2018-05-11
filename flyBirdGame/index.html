@@ -4,17 +4,22 @@
 	<meta charset="UTF-8">
 	<title>Bird</title>
 	<style lang="">
-	*{
-		padding: 0;
-		margin: 0;
-	}
+		*{
+			padding: 0;
+			margin: 0;
+		}
 		#canvas{
 			background-color: lightblue;
+		}
+		.game-show span{
+			font-weight: bold;
+			color: green;
 		}
 	</style>
 </head>
 <body>
 	<canvas width="1000" height="600" id="canvas"></canvas>
+	<div class="game-show">游戏说明 : <span>按空格键暂停或取消暂停</span></div>
 	<script src="./js/simpleInheritance.js"></script>
 	<script src="./js/Game.js"></script>
 	<script src="./js/SourceUtil.js"></script>
