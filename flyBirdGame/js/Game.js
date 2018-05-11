@@ -26,10 +26,8 @@ let Game = Class.extend({
 		// add click Listener when click begin
 		this.canvas.onclick = (e = event ) => {
 			let clickPosition = this.getMousePos(e);
-			console.log(clickPosition)
 			var x=e.clientX-canvas.offsetLeft;
     	var y=e.clientY-canvas.offsetTop;
-			console.log(x,y);
 			if(this.gameOver){
 				if(x> 772 && x < 960 && y > 520 && y < 560){
 					this.init({fps:this.fps,canvasId:this.canvasId});
